@@ -23,8 +23,8 @@ class SanFranMap extends React.Component {
       D3 code to create our visualization by appending onto this.svg
     */
 
-    var width = 960
-    var height = 500
+    var width = 918
+    var height = 800
     //Set svg widgth & height
     var svg = d3.select(this.svg)
       .attr('width', width)
@@ -46,6 +46,17 @@ class SanFranMap extends React.Component {
     //   .projection(d3.geoAlbersUsa());
 
     //Load in GeoJSON data
+    d3.json("../sfmaps/arteries.json", function (json) {
+      console.log(json)
+      //Bind data and create one path per GeoJSON feature
+      svg.selectAll("path")
+        .data(json.features)
+        .enter()
+        .append("path")
+        .attr("d", path);
+
+    });
+ 
     d3.json("../sfmaps/freeways.json", function (json) {
       console.log(json)
       //Bind data and create one path per GeoJSON feature
@@ -57,6 +68,27 @@ class SanFranMap extends React.Component {
 
     });
 
+    d3.json("../sfmaps/neighborhoods.json", function (json) {
+      console.log(json)
+      //Bind data and create one path per GeoJSON feature
+      svg.selectAll("path")
+        .data(json.features)
+        .enter()
+        .append("path")
+        .attr("d", path);
+
+    });
+
+    d3.json("../sfmaps/streets.json", function (json) {
+      console.log(json)
+      //Bind data and create one path per GeoJSON feature
+      svg.selectAll("path")
+        .data(json.features)
+        .enter()
+        .append("path")
+        .attr("d", path);
+
+    });
 
 
   }
