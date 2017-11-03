@@ -1,20 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Counter from './counter';
 import { AppContainer } from 'react-hot-loader';
+import App from './App';
 
 const app = document.createElement('div');
 document.body.appendChild(app);
 
-const render = App => {
+const render = Component => {
   ReactDOM.render(
-    <AppContainer><App /></AppContainer>,
+    <AppContainer>
+      <Component />
+      </AppContainer>,
     app
   );
 };
 
-render(Counter);
+render(App);
 
 if (module.hot) {
-  module.hot.accept('./counter', () => render(Counter));
+  module.hot.accept('./App', () => render(App));
 }
