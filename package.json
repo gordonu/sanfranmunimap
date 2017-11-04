@@ -29,6 +29,7 @@
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
+    "axios": "^0.17.0",
     "d3": "^4.11.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

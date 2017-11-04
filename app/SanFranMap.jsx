@@ -5,26 +5,28 @@ import './main.css';
 class SanFranMap extends React.Component {
 
   componentDidMount() {
-    console.log("HELLLOOOO!!!")
-    this.drawChart();
+    this.drawMap();
   }
 
-  // componentDidUpdate() {
-  //   d3.select(this.svg).selectAll("g").remove();
-  //   this.drawChart();
-  // }
+  componentDidUpdate() {
+    this.drawLocations();
+
+    // d3.select(this.svg).selectAll("g").remove();
+    // this.drawChart();
+  }
 
   // shouldComponentUpdate() {
   //   return false; // This prevents future re-renders of this component
   // }
 
-  drawChart() {
+  drawMap() {
     /*
       D3 code to create our visualization by appending onto this.svg
     */
 
-    var width = 918
+    var width = 920
     var height = 800
+
     //Set svg widgth & height
     var svg = d3.select(this.svg)
       .attr('width', width)
@@ -47,7 +49,7 @@ class SanFranMap extends React.Component {
 
     //Load in GeoJSON data
     d3.json("../sfmaps/arteries.json", function (json) {
-      console.log(json)
+      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -56,9 +58,9 @@ class SanFranMap extends React.Component {
         .attr("d", path);
 
     });
- 
+
     d3.json("../sfmaps/freeways.json", function (json) {
-      console.log(json)
+      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -69,7 +71,7 @@ class SanFranMap extends React.Component {
     });
 
     d3.json("../sfmaps/neighborhoods.json", function (json) {
-      console.log(json)
+      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -80,7 +82,7 @@ class SanFranMap extends React.Component {
     });
 
     d3.json("../sfmaps/streets.json", function (json) {
-      console.log(json)
+      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -89,9 +91,44 @@ class SanFranMap extends React.Component {
         .attr("d", path);
 
     });
-
-
   }
+
+  drawLocations() {
+    var width = 920
+    var height = 800
+    //Set svg widgth & height
+    var svg = d3.select(this.svg)
+      .attr('width', width)
+      .attr('height', height);
+
+    var projection = d3.geoMercator()
+      .center([-122.433701, 37.767683])
+      .scale(250000)
+      .translate([width / 2, height / 2]);
+
+    var formatAsThousands = d3.format(",");
+
+    svg.selectAll("circle")
+      .data(this.props.locations.data.vehicle)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) {
+        return projection([d.lon, d.lat])[0];
+      })
+      .attr("cy", function (d) {
+        return projection([d.lon, d.lat])[1];
+      })
+      .attr("r", 5)
+      .style("fill", "red")
+      .style("stroke", "gray")
+      .style("stroke-width", 0.25)
+      .style("opacity", 0.75)
+      .append("title")			//Simple tooltip
+      .text(function (d) {
+        return d.place + ": Pop. " + formatAsThousands(d.population);
+      });
+  }
+
 
   render() {
     return (
