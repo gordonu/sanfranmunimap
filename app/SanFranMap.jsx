@@ -6,12 +6,15 @@ class SanFranMap extends React.Component {
 
   componentDidMount() {
     this.drawMap();
+    // this.drawLocations();
   }
 
   componentDidUpdate() {
+    // console.log(this.props.locations.data.lastTime.time)
+    d3.select(this.svg).selectAll("circle").remove();
     this.drawLocations();
 
-    // d3.select(this.svg).selectAll("g").remove();
+    
     // this.drawChart();
   }
 
@@ -55,6 +58,7 @@ class SanFranMap extends React.Component {
         .data(json.features)
         .enter()
         .append("path")
+        .attr("class", "arteries")
         .attr("d", path);
 
     });
@@ -66,6 +70,7 @@ class SanFranMap extends React.Component {
         .data(json.features)
         .enter()
         .append("path")
+        .attr("class", "freeways")
         .attr("d", path);
 
     });
@@ -77,6 +82,7 @@ class SanFranMap extends React.Component {
         .data(json.features)
         .enter()
         .append("path")
+        .attr("class", "neighborhoods")
         .attr("d", path);
 
     });
@@ -88,6 +94,7 @@ class SanFranMap extends React.Component {
         .data(json.features)
         .enter()
         .append("path")
+        .attr("class", "streets")
         .attr("d", path);
 
     });
@@ -133,7 +140,6 @@ class SanFranMap extends React.Component {
   render() {
     return (
       <div>
-        <h1>HELLLLOOO!!!!!</h1>
         <svg className="chart" ref={(elem) => { this.svg = elem; }}>
         </svg>
       </div>

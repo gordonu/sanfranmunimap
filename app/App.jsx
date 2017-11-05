@@ -5,31 +5,40 @@ import axios from 'axios';
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { locations: {} };
+    this.state = {
+      locations: {},
+      date: ''
+    };
+    this.getLocation = this.getLocation.bind(this);
   }
 
   componentDidMount() {
+    this.getLocation();
+    // setInterval(this.getLocation(), 15000)
+  }
 
-    axios.get('http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&r=N&t=1144953500233')
+  getLocation() {
+    let uri = 'http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&r=N&t=0'
+
+    setInterval(axios.get(uri)
       .then(response => {
-        // console.log(response)
-        this.setState({ locations : response })
+        console.log(response)
+        this.setState({ locations: response})
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
-      });
-
+      }), 15000)
   }
 
   render() {
     return (
       <div>
-        <h1>Hello World</h1>
-        {console.log('HERE!',this.state.locations)}
-        <SanFranMap locations = {this.state.locations}/>
+        <SanFranMap locations={this.state.locations} />
       </div>
     );
   }
 }
 
 export default App;
+
+

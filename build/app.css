@@ -1,31 +1,19 @@
-.background {
-  fill: green;
-  pointer-events: all;
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.map-layer {
-  fill: #fff;
-  stroke: #aaa;
+html {
+  background: none;
 }
 
-.effect-layer{
-  pointer-events:none;
+.chart path {
+  fill: none;
+  stroke: #35143C;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
-text{
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 300;
-}
-
-text.big-text{
-  font-size: 30px;
-  font-weight: 400;
-}
-
-.effect-layer text, text.dummy-text{
-  font-size: 12px;
-}
-
-#chart path {
-  stroke: #fff;
-}
+.vector .major_road { stroke: #D2A1EE; }
+.vector .minor_road { stroke: #9A7DAD; }
+.vector .highway { stroke: #f39; stroke-width: 1.5px; }
+.vector .rail { stroke: #A1EEEB; }
