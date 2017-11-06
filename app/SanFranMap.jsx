@@ -6,15 +6,14 @@ class SanFranMap extends React.Component {
 
   componentDidMount() {
     this.drawMap();
-    // this.drawLocations();
   }
 
   componentDidUpdate() {
     // console.log(this.props.locations.data.lastTime.time)
-    d3.select(this.svg).selectAll("circle").remove();
+    // d3.select(this.svg).selectAll("circle").remove();
     this.drawLocations();
-
     
+
     // this.drawChart();
   }
 
@@ -34,6 +33,12 @@ class SanFranMap extends React.Component {
     var svg = d3.select(this.svg)
       .attr('width', width)
       .attr('height', height);
+
+    //Select checkbox
+    d3.select("#nValue").on("change", function () {
+      console.log(this.value)
+      // update(+this.value);
+    });
 
     //Define path generator, using the Albers USA projection
 
@@ -126,7 +131,10 @@ class SanFranMap extends React.Component {
         return projection([d.lon, d.lat])[1];
       })
       .attr("r", 5)
-      .style("fill", "red")
+      .attr("id", function (d) {
+        return d.routeTag
+      })
+      .style("fill", "purple")
       .style("stroke", "gray")
       .style("stroke-width", 0.25)
       .style("opacity", 0.75)
@@ -136,12 +144,20 @@ class SanFranMap extends React.Component {
       });
   }
 
+  handleChange (val) {
+    console.log('handleChange executed!!!!', val)
+    d3.select(this.svg).selectAll("#N").style("opacity",0)
+  }
+
 
   render() {
     return (
       <div>
         <svg className="chart" ref={(elem) => { this.svg = elem; }}>
         </svg>
+        <h1>HELLO! PLEASE SELECT ROUTES.</h1>
+        <input type="checkbox" value= "N" id="nValue" onClick={(value) => {this.handleChange(value)}}/> N <br/>
+        <input type="checkbox" value= "N" id="nValue" /> N
       </div>
     );
   }

@@ -13,7 +13,13 @@ html {
   stroke-linecap: round;
 }
 
-.vector .major_road { stroke: #D2A1EE; }
+.chart .freeways { stroke: #f39; stroke-width: 1.5px; }
+.chart .neighborhoods { stroke: #D2A1EE; }
+.chart .streets { stroke: #9A7DAD; }
+.chart .arteries { stroke: black; stroke-width: 1.5px; }
+
+
+/* .vector .major_road { stroke: #D2A1EE; }
 .vector .minor_road { stroke: #9A7DAD; }
 .vector .highway { stroke: #f39; stroke-width: 1.5px; }
-.vector .rail { stroke: #A1EEEB; }
+.vector .rail { stroke: #A1EEEB; } */

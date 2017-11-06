@@ -53,9 +53,7 @@ const productionConfig = merge([
       app: PATHS.app,
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        title: 'San Francisco Trains',
-      }),
+      
     ],
   },
   parts.extractCSS({ use: 'css-loader' }),
@@ -68,9 +66,6 @@ const developmentConfig = merge([
       app: ['react-hot-loader/patch', PATHS.app],
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        title: 'San Francisco Trains',
-      }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
     ],

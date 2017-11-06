@@ -1,0 +1,5 @@
+plugins: [
+      new HtmlWebpackPlugin({
+        title: 'San Francisco Trains',
+      }),
+    ],

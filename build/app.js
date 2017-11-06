@@ -31254,27 +31254,28 @@ var App = function (_React$Component) {
       this.getLocation();
       // setInterval(this.getLocation(), 15000)
     }
-
-    // getLocationInterval() {
-    //   setInterval(this.getLocation(), 15000)
-    // }
-
   }, {
     key: 'getLocation',
     value: function getLocation() {
+      var _this2 = this;
+
       var uri = 'http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&r=N&t=0';
-      // let uri = `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&r=N&t=1509778453437`
-      console.log(uri);
-      setInterval(_axios2.default.get("https://www.reddit.com/.json").then(function (response) {
+
+      setInterval(_axios2.default.get(uri).then(function (response) {
         console.log(response);
+        _this2.setState({ locations: response });
       }).catch(function (error) {
-        console.log(error);
+        console.log('Error fetching and parsing data', error);
       }), 15000);
     }
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('div', null);
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_SanFranMap2.default, { locations: this.state.locations })
+      );
     }
   }]);
 
@@ -31371,25 +31372,25 @@ var SanFranMap = function (_React$Component) {
       d3.json("../sfmaps/arteries.json", function (json) {
         // console.log(json)
         //Bind data and create one path per GeoJSON feature
-        svg.selectAll("path").data(json.features).enter().append("path").attr("d", path);
+        svg.selectAll("path").data(json.features).enter().append("path").attr("class", "arteries").attr("d", path);
       });
 
       d3.json("../sfmaps/freeways.json", function (json) {
         // console.log(json)
         //Bind data and create one path per GeoJSON feature
-        svg.selectAll("path").data(json.features).enter().append("path").attr("d", path);
+        svg.selectAll("path").data(json.features).enter().append("path").attr("class", "freeways").attr("d", path);
       });
 
       d3.json("../sfmaps/neighborhoods.json", function (json) {
         // console.log(json)
         //Bind data and create one path per GeoJSON feature
-        svg.selectAll("path").data(json.features).enter().append("path").attr("d", path);
+        svg.selectAll("path").data(json.features).enter().append("path").attr("class", "neighborhoods").attr("d", path);
       });
 
       d3.json("../sfmaps/streets.json", function (json) {
         // console.log(json)
         //Bind data and create one path per GeoJSON feature
-        svg.selectAll("path").data(json.features).enter().append("path").attr("d", path);
+        svg.selectAll("path").data(json.features).enter().append("path").attr("class", "streets").attr("d", path);
       });
     }
   }, {
