@@ -10,9 +10,9 @@ class SanFranMap extends React.Component {
 
   componentDidUpdate() {
     // console.log(this.props.locations.data.lastTime.time)
-    // d3.select(this.svg).selectAll("circle").remove();
+    d3.select(this.svg).selectAll("circle").remove();
     this.drawLocations();
-    
+
 
     // this.drawChart();
   }
@@ -142,11 +142,22 @@ class SanFranMap extends React.Component {
       .text(function (d) {
         return d.place + ": Pop. " + formatAsThousands(d.population);
       });
+
+    console.log('drawing done')
   }
 
-  handleChange (val) {
+
+  removeLocations() {
+    d3.select(this.svg).selectAll("circle").remove();
+  }
+
+  handleChange(val) {
     console.log('handleChange executed!!!!', val)
-    d3.select(this.svg).selectAll("#N").style("opacity",0)
+    console.log('HELLO', N.active)
+    let active = N.active ? false : true,
+      newOpactiy = active ? 0 : .1;
+    d3.select(this.svg).selectAll("#N").style("opacity", newOpactiy)
+    N.active = active;
   }
 
 
@@ -156,8 +167,9 @@ class SanFranMap extends React.Component {
         <svg className="chart" ref={(elem) => { this.svg = elem; }}>
         </svg>
         <h1>HELLO! PLEASE SELECT ROUTES.</h1>
-        <input type="checkbox" value= "N" id="nValue" onClick={(value) => {this.handleChange(value)}}/> N <br/>
-        <input type="checkbox" value= "N" id="nValue" /> N
+        <input type="checkbox" value="N" id="nValue" onClick={(value) => { this.handleChange(value) }} checked/> N <br />
+        <input type="button" value="Redraw" id="nValue2" onClick={(value) => { this.drawLocations() }} />
+        <input type="button" value="Remove" id="nValue3" onClick={(value) => { this.removeLocations() }} />
       </div>
     );
   }

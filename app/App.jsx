@@ -31,14 +31,15 @@ class App extends React.Component {
     // let uri = 'http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&t=0'
     let uri = `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&t=${Date.now}`
 
-    setInterval(axios.get(uri)
+    axios.get(uri)
       .then(response => {
         console.log(response)
         this.setState({ locations: response})
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
-      }), 15000)
+      })
+      setTimeout(() => {this.getLocation()}, 15000)
   }
 
   // handleChange (val) {
