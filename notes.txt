@@ -3,3 +3,13 @@ plugins: [
         title: 'San Francisco Trains',
       }),
     ],
+
+
+
+       console.log('handleChange executed!!!!', val)
+    // console.log('HELLO', N.active)
+    // let active = this.props.selections.N ? false : true,
+      // newOpactiy = active ? 0 : 1;
+    // d3.select(this.svg).selectAll("#N").style("opacity", newOpactiy)
+    // this.props.selections.N = active;
+    // console.log(this.props.selections)

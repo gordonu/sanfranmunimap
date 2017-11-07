@@ -1,6 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 import './main.css';
+import Checkbox from './Checkbox'
 
 class SanFranMap extends React.Component {
 
@@ -9,12 +10,8 @@ class SanFranMap extends React.Component {
   }
 
   componentDidUpdate() {
-    // console.log(this.props.locations.data.lastTime.time)
     d3.select(this.svg).selectAll("circle").remove();
     this.drawLocations();
-
-
-    // this.drawChart();
   }
 
   // shouldComponentUpdate() {
@@ -34,14 +31,13 @@ class SanFranMap extends React.Component {
       .attr('width', width)
       .attr('height', height);
 
-    //Select checkbox
-    d3.select("#nValue").on("change", function () {
-      console.log(this.value)
-      // update(+this.value);
-    });
+    //Select checkbox**********************************************
+    // d3.select("#nValue").on("change", function () {
+    //   // console.log(this.value)
+    //   // update(+this.value);
+    // });
 
     //Define path generator, using the Albers USA projection
-
     var projection = d3.geoMercator()
       .center([-122.433701, 37.767683])
       .scale(250000)
@@ -51,13 +47,8 @@ class SanFranMap extends React.Component {
     var path = d3.geoPath()
       .projection(projection);
 
-
-    // var path = d3.geoPath()
-    //   .projection(d3.geoAlbersUsa());
-
     //Load in GeoJSON data
     d3.json("../sfmaps/arteries.json", function (json) {
-      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -69,7 +60,6 @@ class SanFranMap extends React.Component {
     });
 
     d3.json("../sfmaps/freeways.json", function (json) {
-      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -81,7 +71,6 @@ class SanFranMap extends React.Component {
     });
 
     d3.json("../sfmaps/neighborhoods.json", function (json) {
-      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -93,7 +82,6 @@ class SanFranMap extends React.Component {
     });
 
     d3.json("../sfmaps/streets.json", function (json) {
-      // console.log(json)
       //Bind data and create one path per GeoJSON feature
       svg.selectAll("path")
         .data(json.features)
@@ -106,6 +94,20 @@ class SanFranMap extends React.Component {
   }
 
   drawLocations() {
+
+    //persist object storing status of routes in state
+    //when checkbox is checked it triggers a rerender of the component
+    //when component rerenders it triggers removal and drawLocations in componentDidUpdate
+    //drawLocations renders locations based on object in state using filter method
+    //drawlocations always renders based on selections.
+
+    let locations = this.props.locations
+    let selections = this.props.selections
+
+    let data = locations.filter(function (ele) {
+      return selections[ele.routeTag] === true
+    })
+
     var width = 920
     var height = 800
     //Set svg widgth & height
@@ -121,7 +123,7 @@ class SanFranMap extends React.Component {
     var formatAsThousands = d3.format(",");
 
     svg.selectAll("circle")
-      .data(this.props.locations.data.vehicle)
+      .data(data)
       .enter()
       .append("circle")
       .attr("cx", function (d) {
@@ -140,36 +142,26 @@ class SanFranMap extends React.Component {
       .style("opacity", 0.75)
       .append("title")			//Simple tooltip
       .text(function (d) {
-        return d.place + ": Pop. " + formatAsThousands(d.population);
+        return d.place + ": Pop. " + formatAsThousands(d.population);   //*********** */
       });
-
-    console.log('drawing done')
   }
-
-
-  removeLocations() {
-    d3.select(this.svg).selectAll("circle").remove();
-  }
-
-  handleChange(val) {
-    console.log('handleChange executed!!!!', val)
-    console.log('HELLO', N.active)
-    let active = N.active ? false : true,
-      newOpactiy = active ? 0 : .1;
-    d3.select(this.svg).selectAll("#N").style("opacity", newOpactiy)
-    N.active = active;
-  }
-
 
   render() {
     return (
       <div>
+        <h1>San Francisco Muni Locations</h1>
         <svg className="chart" ref={(elem) => { this.svg = elem; }}>
         </svg>
-        <h1>HELLO! PLEASE SELECT ROUTES.</h1>
-        <input type="checkbox" value="N" id="nValue" onClick={(value) => { this.handleChange(value) }} checked/> N <br />
-        <input type="button" value="Redraw" id="nValue2" onClick={(value) => { this.drawLocations() }} />
-        <input type="button" value="Remove" id="nValue3" onClick={(value) => { this.removeLocations() }} />
+        <h2>Select Routes</h2>
+
+        <input type="button" value="Select All" onClick={(event) => { this.props.handleSelectAll(event) }} />
+        <input type="button" value="Select None" onClick={(event) => { this.props.handleSelectAll(event) }} />
+        
+        <Checkbox
+          routes={this.props.routes}
+          selections={this.props.selections}
+          handleInputChange={this.props.handleInputChange}
+        />
       </div>
     );
   }
