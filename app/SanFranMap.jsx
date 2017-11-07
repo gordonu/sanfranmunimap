@@ -14,15 +14,7 @@ class SanFranMap extends React.Component {
     this.drawLocations();
   }
 
-  // shouldComponentUpdate() {
-  //   return false; // This prevents future re-renders of this component
-  // }
-
   drawMap() {
-    /*
-      D3 code to create our visualization by appending onto this.svg
-    */
-
     var width = 920
     var height = 800
 
@@ -31,18 +23,11 @@ class SanFranMap extends React.Component {
       .attr('width', width)
       .attr('height', height);
 
-    //Select checkbox**********************************************
-    // d3.select("#nValue").on("change", function () {
-    //   // console.log(this.value)
-    //   // update(+this.value);
-    // });
-
     //Define path generator, using the Albers USA projection
     var projection = d3.geoMercator()
       .center([-122.433701, 37.767683])
       .scale(250000)
       .translate([width / 2, height / 2]);
-
 
     var path = d3.geoPath()
       .projection(projection);
@@ -110,6 +95,7 @@ class SanFranMap extends React.Component {
 
     var width = 920
     var height = 800
+
     //Set svg widgth & height
     var svg = d3.select(this.svg)
       .attr('width', width)
@@ -119,8 +105,6 @@ class SanFranMap extends React.Component {
       .center([-122.433701, 37.767683])
       .scale(250000)
       .translate([width / 2, height / 2]);
-
-    var formatAsThousands = d3.format(",");
 
     svg.selectAll("circle")
       .data(data)
@@ -132,36 +116,37 @@ class SanFranMap extends React.Component {
       .attr("cy", function (d) {
         return projection([d.lon, d.lat])[1];
       })
-      .attr("r", 5)
+      .attr("r", 4)
       .attr("id", function (d) {
         return d.routeTag
       })
-      .style("fill", "purple")
+      .style("fill", "#2B3A67")
       .style("stroke", "gray")
       .style("stroke-width", 0.25)
       .style("opacity", 0.75)
-      .append("title")			//Simple tooltip
-      .text(function (d) {
-        return d.place + ": Pop. " + formatAsThousands(d.population);   //*********** */
-      });
   }
+
 
   render() {
     return (
-      <div>
-        <h1>San Francisco Muni Locations</h1>
-        <svg className="chart" ref={(elem) => { this.svg = elem; }}>
-        </svg>
+      <div className="col-md-12">
+        <div className="text-center">
+          <h1>San Francisco Muni Locations</h1>
+
+          <svg className="map" ref={(elem) => { this.svg = elem; }}>
+          </svg>
+        </div>
         <h2>Select Routes</h2>
 
         <input type="button" value="Select All" onClick={(event) => { this.props.handleSelectAll(event) }} />
         <input type="button" value="Select None" onClick={(event) => { this.props.handleSelectAll(event) }} />
-        
+
         <Checkbox
           routes={this.props.routes}
           selections={this.props.selections}
           handleInputChange={this.props.handleInputChange}
         />
+
       </div>
     );
   }

@@ -13,3 +13,97 @@ plugins: [
     // d3.select(this.svg).selectAll("#N").style("opacity", newOpactiy)
     // this.props.selections.N = active;
     // console.log(this.props.selections)
+
+
+
+
+
+    
+    ////REMOVE?
+  getLocation() {
+    let uri = `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&t=${Date.now}`
+
+    axios.get(uri)
+      .then(response => {
+        this.setState({ locations: response.data.vehicle })
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      })
+    setTimeout(() => { this.getLocation() }, 15000)
+  }
+
+
+
+ componentDidUpdate() {
+    // this.setSelection();
+  }
+
+  //set selection consolidated into get location concurrent?
+  setSelection() {
+    let obj = {};
+    this.state.locations.map((ele) => {
+      return ele.routeTag
+    }).filter((ele, index, self) => {
+      return index === self.indexOf(ele)
+    }).forEach((ele) => {
+      obj[ele] = true
+    })
+  }
+
+
+
+
+
+  // shouldComponentUpdate() {
+  //   return false; // This prevents future re-renders of this component
+  // }
+
+
+
+
+   //Select checkbox**********************************************
+    // d3.select("#nValue").on("change", function () {
+    //   // console.log(this.value)
+    //   // update(+this.value);
+    // });
+
+
+
+
+
+      <!-- <link href="app.css" rel="stylesheet"> -->
+
+
+
+
+    var formatAsThousands = d3.format(",");
+
+            .append("title")			//Simple tooltip
+      .text(function (d) {
+        console.log(d)
+        return d.routeTag + ", Speed: " + d.speedKmHr
+      });
+
+
+
+
+      body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  background: none;
+}
+
+.map path {
+  fill: none;
+  stroke: #35143C;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.map .freeways { stroke: #f39; stroke-width: 1.5px; }
+.map .neighborhoods { stroke: #D2A1EE; }
+.map .streets { stroke: #9A7DAD; }
+.map .arteries { stroke: black; stroke-width: 1.5px; }
