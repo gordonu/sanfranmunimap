@@ -6,20 +6,25 @@ html {
   background: none;
 }
 
-.chart path {
+.map path {
   fill: none;
   stroke: #35143C;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
-.chart .freeways { stroke: #f39; stroke-width: 1.5px; }
-.chart .neighborhoods { stroke: #D2A1EE; }
-.chart .streets { stroke: #9A7DAD; }
-.chart .arteries { stroke: black; stroke-width: 1.5px; }
+.map .freeways { 
+  stroke: #F56476; stroke-width: 1.5px; 
+}
 
+.map .neighborhoods { 
+  stroke: #D2A1EE; 
+}
 
-/* .vector .major_road { stroke: #D2A1EE; }
-.vector .minor_road { stroke: #9A7DAD; }
-.vector .highway { stroke: #f39; stroke-width: 1.5px; }
-.vector .rail { stroke: #A1EEEB; } */
+.map .streets { 
+  stroke: #9A7DAD; 
+}
+
+.map .arteries { 
+  stroke: black; stroke-width: 1.5px; 
+}
