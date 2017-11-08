@@ -1,7 +1,7 @@
 import React from 'react';
-import SanFranMap from './SanFranMap'
 import axios from 'axios';
-import * as d3 from 'd3';
+import SanFranMap from './SanFranMap';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -10,25 +10,23 @@ class App extends React.Component {
       locations: [],
       routes: [],
       selections: {},
-      firstRunFlag: true
+      firstRunFlag: true,
     };
 
-    this.getLocationConcurrent = this.getLocationConcurrent.bind(this);
+    this.getLocationConcurrent = this.getLocationsRoutesConcurrent.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectAll = this.handleSelectAll.bind(this);
   }
 
   componentDidMount() {
-    this.getLocationConcurrent();
+    this.getLocationsRoutesConcurrent();
   }
 
-  getLocationConcurrent() {
+  getLocationsRoutesConcurrent() {
+    const vehicleLocations = `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&t=${Date.now}`;
+    const routeList = 'http://webservices.nextbus.com/service/publicJSONFeed?command=routeList&a=sf-muni';
 
-    let firstRunFlag = true
-
-    let vehicleLocations = `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=sf-muni&t=${Date.now}`
-    let routeList = 'http://webservices.nextbus.com/service/publicJSONFeed?command=routeList&a=sf-muni'
-
+    // Using axios to perform multiple concurrent requests
     function getVehicleLocations() {
       return axios.get(vehicleLocations);
     }
@@ -39,64 +37,64 @@ class App extends React.Component {
 
     axios.all([getVehicleLocations(), getRouteList()])
       .then(axios.spread((locations, routes) => {
-        
         // Both requests are now complete
+        // Set state with response and set all selections to initially be true
         if (this.state.firstRunFlag === true) {
-          let obj = {};
-
-          let routeAry = routes.data.route.map((ele) => {
-            return ele.tag
+          const obj = {};
+          routes.data.route.map((ele) => {
+            return ele.tag;
           }).forEach((ele) => {
-            obj[ele] = true
-          })
+            obj[ele] = true;
+          });
 
           this.setState({
             locations: locations.data.vehicle,
             routes: routes.data.route,
             selections: obj,
-            firstRunFlag: false
-          })
+            firstRunFlag: false,
+          });
 
-
+          // Set state with response without overwriting selections
         } else {
           this.setState({
             locations: locations.data.vehicle,
-            routes: routes.data.route
-          })
+            routes: routes.data.route,
+          });
         }
-
       }));
-
-    setTimeout(() => { this.getLocationConcurrent() }, 15000)
+    // Invoke getLocationConcurrent every 15 seconds
+    setTimeout(() => { this.getLocationsRoutesConcurrent(); }, 15000);
   }
 
+  // Handler function for checkboxes
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
-    let selections = Object.assign({}, this.state.selections);    //creating copy of object
-    selections[name] = value;                        //updating value
+    // Create copy of object
+    const selections = Object.assign({}, this.state.selections);
+    // Update value
+    selections[name] = value;
     this.setState({ selections });
   }
 
+  // Handler function for 'Select All' and 'Select None' buttons
   handleSelectAll(event) {
     const target = event.target;
-    const value = target.value
-
-    const bool = target.value === 'Select All' ? true : false;
-
-    let selections = Object.assign({}, this.state.selections);    //creating copy of object
-    let selectionKeys = Object.keys(selections);
+    const bool = target.value === 'Select All';
+    const selections = Object.assign({}, this.state.selections);
+    // Create copy of object
+    const selectionKeys = Object.keys(selections);
 
     selectionKeys.forEach((ele) => {
+      // Update value
       selections[ele] = bool;
-    })
+    });
 
-    this.setState({ selections })
+    this.setState({ selections });
   }
 
-  
+
   render() {
     return (
       <div>
@@ -115,5 +113,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-

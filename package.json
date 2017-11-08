@@ -1,12 +1,16 @@
 {
   "name": "sanfrantrains",
   "version": "1.0.0",
-  "description": "",
+  "description": "React application that shows San Francisco Muni locations on to an interactive map",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --env development",
     "build": "webpack --env production",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gordonu/sanfrantrains.git"
   },
   "keywords": [],
   "author": "",
@@ -14,13 +18,18 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.7",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
     "html-webpack-plugin": "^2.30.1",
     "json-loader": "^0.5.7",
     "style-loader": "^0.19.0",
@@ -31,6 +40,7 @@
   "dependencies": {
     "axios": "^0.17.0",
     "d3": "^4.11.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-hot-loader": "^3.0.0"

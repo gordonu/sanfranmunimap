@@ -1,7 +1,6 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
-const webpack = require('webpack')
+const webpack = require('webpack');
 
 const parts = require('./webpack.parts');
 
@@ -52,9 +51,7 @@ const productionConfig = merge([
     entry: {
       app: PATHS.app,
     },
-    plugins: [
-      
-    ],
+    plugins: [],
   },
   parts.extractCSS({ use: 'css-loader' }),
 ]);
@@ -80,7 +77,6 @@ const developmentConfig = merge([
 
 
 module.exports = (env) => {
-
   process.env.BABEL_ENV = env;
 
   if (env === 'production') {

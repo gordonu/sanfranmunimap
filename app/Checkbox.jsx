@@ -1,27 +1,22 @@
 import React from 'react';
 
-class Checkbox extends React.Component {
-
-  render() {
-    let boxes = this.props.routes.map((ele, i) => {
-      return (
-        <div key={i} className="col-sm-3" >
-
-          <label>
-            <input key={i} name={ele.tag} type="checkbox" checked={this.props.selections[`${ele.tag}`]} onChange={this.props.handleInputChange} />
-            {ele.title}
-          </label>
-
-        </div>
-      )
-    })
-
+const Checkbox = (props) => {
+  const boxes = props.routes.map((ele) => {
     return (
-      <form>
-        {boxes}
-      </form>
+      <div key={ele.tag} className="col-sm-3" >
+        <label htmlFor="checkboxes">
+          <input key={ele.tag} name={ele.tag} type="checkbox" checked={props.selections[`${ele.tag}`]} onChange={props.handleInputChange} />
+          {ele.title}
+        </label>
+      </div>
     );
-  }
-}
+  });
+  // Render checkboxes for all routes(
+  return (
+    <form>
+      {boxes}
+    </form >
+  );
+};
 
 export default Checkbox;
